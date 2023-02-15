@@ -1,0 +1,29 @@
+29.11
+user ranking level:
+    features regression on rank, find steapest slope.
+    genres as categories
+
+    apply a inpretable model(tree) to fit ranking, the parameters are the explanation
+    ordinal logistic regression
+
+
+    some key words: ordination methods, non-parametric methods.
+
+plots:
+    vertical overlapped bar, y: rank, x: features(from left: most important features for this ranking)
+
+    marginal distributions of ranking
+
+    stacked bar chart: y: score(use MC averaging model to generate) (stacked features) x: item
+        eg. guess user preference
+
+
+
+present:
+    animation on slides, showing clicks on web
+
+
+30.11
+
+    causality model on features and changes of rank. 
+        linGAM, econML - dowhy

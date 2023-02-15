@@ -1,0 +1,10 @@
+xgboost
+lime
+shap
+econml
+torch
+djangorestframework
+django-cors-headers
+scikit-criteria==0.2.10
+pylast
+bs4

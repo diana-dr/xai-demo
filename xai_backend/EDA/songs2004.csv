@@ -1,0 +1,11 @@
+artist,song,duration_ms,explicit,year,popularity,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,genre
+Usher,Yeah! (feat. Lil Jon & Ludacris),250373,False,2004,81,0.894,0.791,2,-4.699,1,0.112,0.0183,0.0,0.0388,0.583,105.018,"hip hop, pop, R&B"
+Anastacia,Left Outside Alone,257426,False,2004,65,0.663,0.746,2,-3.567,0,0.0321,0.0697,0.0,0.0929,0.325,102.847,pop
+Daddy Yankee,Gasolina,192600,False,2004,11,0.857,0.801,0,-6.499,1,0.0618,0.332,1.2e-06,0.0789,0.753,96.009,latin
+Destiny's Child,Lose My Breath,242013,False,2004,61,0.814,0.899,1,-5.958,1,0.0637,0.00727,0.219,0.0979,0.545,119.011,"pop, R&B"
+Black Eyed Peas,Let's Get It Started - Spike Mix,217733,False,2004,53,0.785,0.799,11,-2.208,0,0.126,0.117,0.0,0.292,0.797,104.923,"hip hop, pop"
+O-Zone,Dragostea Din Tei,215431,False,2004,56,0.809,0.965,0,-3.947,1,0.0427,0.177,0.0,0.0577,0.672,130.103,pop
+Terror Squad,Lean Back,247426,True,2004,67,0.783,0.916,1,-3.344,1,0.415,0.11,0.0,0.0746,0.695,95.321,hip hop
+Gwen Stefani,What You Waiting For?,221226,False,2004,60,0.676,0.948,5,-2.557,1,0.0628,0.0509,8.19e-06,0.384,0.731,136.027,"pop, R&B"
+Ashanti,Only U - No Intro,186306,False,2004,56,0.601,0.621,6,-5.576,0,0.0434,0.0374,1.75e-06,0.188,0.278,94.547,"hip hop, pop, R&B"
+Houston,I Like That,236520,False,2004,59,0.797,0.502,10,-3.925,0,0.0968,0.0154,0.0,0.1,0.385,106.997,"hip hop, pop"
