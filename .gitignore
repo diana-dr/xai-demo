@@ -133,6 +133,6 @@ dmypy.json
 
 vue.config.js
 __init__.py
-node_modules
+node_modules/
 venv
 versions
