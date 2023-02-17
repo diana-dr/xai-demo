@@ -11,7 +11,6 @@
         </div>
       </transition-group>
     </draggable>
-    <button @click="submit()" id="button"><b>Submit Ranking</b></button>
   </div>
   </div>
 
@@ -71,8 +70,8 @@
       <div id="loading">
       <img src="../../loading.gif" alt="Loading..." id="loading_img">
       </div>
-      <div v-if="showShap"><img src="../../../shap_graph.svg" class="shapClass"></div>
-      <div id="simi" style="width: 350%;"></div>
+      <div v-if="showShap" id="shap_image"><img src="../../../shap_graph.svg"/></div>
+      <div id="simi" v-if="showShap" style="width: 350%"></div>
       <!-- <div id="bubble_test"></div> -->
       <!-- <div id="bubble_df"></div>
       <div id="df_line"></div>
@@ -94,6 +93,7 @@
       </div>
     </div>
   </div>
+  <button @click="submit()" id="button"><b>Submit Ranking</b></button>
 </template>
 
 <script>
@@ -105,6 +105,7 @@ import {getRanking, postRanking, getPreference} from '../api/api'
 import { f1 } from "../plot_functions/plot.js";
 import { f3 } from "../plot_functions/plot.js";
 import { item_similarity3 } from "../plot_functions/plot.js";
+import { barplot } from "../plot_functions/global.js";
 // import {bubble} from '../plot_functions/global'
 
 // function getthird_rankRanking() {
@@ -182,6 +183,9 @@ export default defineComponent({
       // this.simi.plot("df_scatter").scatter({
       //           // config: { x: "Age", y: "Fare" }
       //         })
+
+
+
     },
 
     loadRanking() {
@@ -205,11 +209,23 @@ export default defineComponent({
           // console.log(this.feature_importance)
           // console.log(this.item_explanations)
         })        
-
-        setTimeout(() => document.getElementById('loading').style.display = 'none', 20000);
-        setTimeout(() => this.showShap = true, 20000);
-
+        setTimeout(() => document.getElementById('loading').style.display = 'none', 25000);
+        setTimeout(() => this.showShap = true, 25000);
+        // setTimeout(() => {var elem = document.createElement("img");
+        //                   elem.className = "shapClass";
+        //                   elem.src = "../../../shap_graph.svg"; 
+        //                   document.getElementById("shap_image").appendChild(elem);}, 25000);
+        setTimeout(() => barplot(this.third_rank), 25000);
+        // setTimeout(() => {
+        //   // Load the HTML file using AJAX or fetch
+        //   fetch('bar.html')
+        //   .then(response => response.text())
+        //   .then(html => {
+        //   document.querySelector('#simi').innerHTML = html;
+        //   });
+        //   }, 20000);
     },
+
     getUserPref() {
         getPreference().then(response => {
           console.log(response.data)

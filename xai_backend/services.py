@@ -77,9 +77,9 @@ def compare_rankings(request):
         # save a shap graph in root folder, it also tells how important a feature is to the ranking
         DML_(X[cols])
 
+        html_str = bar_html(X[cols])
 
-        res = {'feature_importance': feature_importance, 'item_explanations': item_explanations}
-
+        res = {'feature_importance': feature_importance, 'item_explanations': item_explanations, 'html_str': html_str}
         return HttpResponse(json.dumps(res))
 
 
@@ -190,6 +190,9 @@ def DML_(X, path='shap_graph.svg'):
     # bbox = Bbox.from_extents(min(tightbox.x0,0), min(tightbox.y0,0),
     #                         max(tightbox.x1,w), max(tightbox.y1,h))
 
+    if os.path.exists(path):
+        os.remove(path)
+
     plt.savefig(path, format='svg', dpi=1200, bbox_inches = 'tight')
 
 
@@ -197,3 +200,54 @@ def get_shap(*args):
     path = "shap_graph.svg"
     file_one = open(path, "rb")
     return HttpResponse(file_one.read(), content_type='image/png')
+
+import plotly.graph_objs as go 
+import plotly.offline as offline 
+from plotly.offline import plot 
+from sklearn.cluster import KMeans
+
+def bar_html(X): 
+    songs = TopSong.objects.all() 
+    song_list = SongSerializer(songs, many=True) 
+    data = song_list.data 
+    df = pd.DataFrame(list(songs.values()))
+
+    mask = ['acousticness', 'danceability', 'energy',
+        'instrumentalness', 'key', 'liveness',
+    'loudness', 'popularity',
+    'speechiness', 'tempo', 'valence']
+    kmeans = KMeans(n_clusters=5, random_state=20).fit(df[mask])
+    cat = kmeans.predict(X[mask])
+
+    X=(X-X.min())/(X.max()-X.min())
+    _ = X.pop('rank')
+    change = X.pop('change')
+    user_rank = X.pop('user_rank')
+    # colors = ['rgba(255, 174, 255, 0.5)', # red
+    #  'rgba(255, 255, 128, 0.5)', # yellow
+    #   'rgba(199, 174, 255, 0.5)', # green
+    #   ]
+    colors = ['rgba(255, 174, 255, 0.5)', 'rgba(255, 255, 128, 0.5)', 'rgba(128, 255, 200, 0.5)',
+    'rgba(199, 174, 255, 0.5)', 'rgba(39, 140, 255, 0.5)', 'rgba(255, 122, 133, 0.5)', 'rgba(55, 174, 99, 0.5)',
+    'rgba(140, 100, 255, 0.5)', 'rgba(80, 150, 74, 0.5)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 174, 0, 0.5)'
+    ]
+
+    res = []
+    for rank in range(10):
+        res.append(
+            go.Bar(
+                x=X.columns,
+                y=X.iloc[rank],
+                name=rank,
+                marker = dict(color = colors[cat[rank]],
+                                line=dict(color='rgb(0,0,0)',width=1.5)),
+            )
+        )
+
+    layout = go.Layout(
+        barmode='overlay'
+    )
+    fig = go.Figure(data=res, layout=layout)
+    fig.write_html('bar.html', full_html=False)
+
+    return fig.to_html(full_html=False)
