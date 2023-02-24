@@ -159,7 +159,7 @@ for (let i = 0; i < features.length; i++) {
   diffs.push({
     name: features[i],
     x: 0,
-    y: diff,
+    y: Math.abs(diff),
     size: Math.abs(diff),
   });
 }

@@ -61,21 +61,22 @@ export const barplot = (songs) => {
         data.push(trace);
     }
 
-    let layout = {
-    barmode: 'overlay',
-    legend: {
-        orientation: 'h',
-        x: 0,
-        y: 1.2,
-        yanchor: 'bottom'
-      }
-    };
+    // let layout = {
+    // barmode: 'overlay',
+    // legend: {
+    //     orientation: 'h',
+    //     x: 0,
+    //     y: 1.2,
+    //     yanchor: 'bottom'
+    //   }
+    // };
 
-    let config = {
-    responsive: true
-    };
+    // let config = {
+    // responsive: true
+    // };
 
-    Plotly.newPlot('simi', data, layout, config);
+    // Plotly.newPlot('simi', data, layout, config);
+    X.plot("simi").bar()
 
 }
 

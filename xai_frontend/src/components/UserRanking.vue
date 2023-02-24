@@ -70,8 +70,29 @@
       <div id="loading">
       <img src="../../loading.gif" alt="Loading..." id="loading_img">
       </div>
-      <div v-if="showShap" id="shap_image"><img src="../../../shap_graph.svg"/></div>
-      <div id="simi" v-if="showShap" style="width: 350%"></div>
+      <span v-if="showShap">
+          <p style="margin-left: 20px">Features Contribution Graph</p>
+          <ul>
+            <pre><span>
+            The shap value is the measurement of features contribution to the change of the ranking. <br>
+            The larger the value means the larger the impach on your final ranking.
+          </span></pre>
+          </ul></span>
+      <div v-if="showShap" id="shap_image" style="width: 70%"><img src="../../../shap_graph.svg"/>
+      </div>
+      <div id="simi" v-if="showShap" style="width: 80%"> <!-- style="width: 350%"> -->
+        <!-- <div class="icon-container">
+        <img src="../../question_mark.png" alt="Icon" class="question_img">
+        <span class="text">
+          <p style="margin-left: 20px"> Global Similarity Graph </p>
+          <ul>
+            <pre><span>
+              
+          </span></pre>
+          </ul>
+        </span>
+      </div> -->
+      </div>
       <!-- <div id="bubble_test"></div> -->
       <!-- <div id="bubble_df"></div>
       <div id="df_line"></div>
@@ -209,12 +230,12 @@ export default defineComponent({
           // console.log(this.feature_importance)
           // console.log(this.item_explanations)
         })        
-        setTimeout(() => document.getElementById('loading').style.display = 'none', 25000);
-        setTimeout(() => this.showShap = true, 25000);
+        setTimeout(() => document.getElementById('loading').style.display = 'none', 18000);
+        setTimeout(() => this.showShap = true, 18000);
         // setTimeout(() => {var elem = document.createElement("img");
         //                   elem.className = "shapClass";
         //                   elem.src = "../../../shap_graph.svg"; 
-        //                   document.getElementById("shap_image").appendChild(elem);}, 25000);
+        //                   document.getElementById("shap_image").appendChild(elem);}, 21000);
         setTimeout(() => barplot(this.third_rank), 25000);
         // setTimeout(() => {
         //   // Load the HTML file using AJAX or fetch
@@ -466,6 +487,7 @@ a {
   height: 30px;
 }
 
+
 .icon-container .text {
   top: 30px;
   // right: -50px;
@@ -487,13 +509,13 @@ a {
   width: 900%;
 }
 
-.icon:hover + .text {
-  display: block;
-}
+
+// .icon:hover + .text {
+//   display: block;
+// }
 
 .icon-container:hover .text {
   display: block;
-  
 }
 .shapClass {
   margin-left: 30px;

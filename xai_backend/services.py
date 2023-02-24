@@ -190,8 +190,8 @@ def DML_(X, path='shap_graph.svg'):
     # bbox = Bbox.from_extents(min(tightbox.x0,0), min(tightbox.y0,0),
     #                         max(tightbox.x1,w), max(tightbox.y1,h))
 
-    if os.path.exists(path):
-        os.remove(path)
+    # if os.path.exists(path):
+    #     os.remove(path)
 
     plt.savefig(path, format='svg', dpi=1200, bbox_inches = 'tight')
 
