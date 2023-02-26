@@ -3,6 +3,12 @@
     <div class="list">
     <div class="list1">
     <h2>User Ranking</h2>
+    <div class="question">
+        <img src="../../question_mark.png" alt="Icon" class="icon">
+        <span class="text">
+          <p style="margin-left: 20px"> Rank the songs below based on your personal preference. After submitting the ranking, please wait patiently as the explanation is computed. </p>
+          </span>
+      </div>
     <draggable :list="itemList" ghost-class="ghost" @end="onEnd" @change="onChange">
       <transition-group>
         <div class="sortable" v-for="element in itemList" :key="element.rank" @click="onclick(element)">
@@ -29,6 +35,7 @@
         </div>
         <button style="background:transparent; border:none; color:transparent;" id="redoButton"><b>Redo Ranking</b></button>
         </div>
+      </div>
 
       <!-- <div class="list">
         <div v-for="item in third_rank" :key="item">
@@ -41,11 +48,11 @@
         </div>
         <button style="background:transparent; border:none; color:transparent;"></button>
       </div> -->
-      <div class="explanation">
+      <div class="explanation" v-if="showRank">
         <h2>Explanation</h2>
         <div v-if="showShap"><h3>Global Explanation</h3></div>
-        <div class="icon-container">
-        <img src="../../question_mark.png" alt="Icon" class="question_img">
+      <div class="question">
+        <img src="../../question_mark.png" alt="Icon" class="icon">
         <span class="text">
           <p style="margin-left: 20px"> We have ranked these songs based on: </p>
           <ul>
@@ -70,29 +77,11 @@
       <div id="loading">
       <img src="../../loading.gif" alt="Loading..." id="loading_img">
       </div>
-      <span v-if="showShap">
-          <p style="margin-left: 20px">Features Contribution Graph</p>
-          <ul>
-            <pre><span>
-            The shap value is the measurement of features contribution to the change of the ranking. <br>
-            The larger the value means the larger the impach on your final ranking.
-          </span></pre>
-          </ul></span>
-      <div v-if="showShap" id="shap_image" style="width: 70%"><img src="../../../shap_graph.svg"/>
+      <div v-if="showShap" style="text-align: center;"><h3>Shap Plot</h3>
+        The shap value is the measurement of features' contribution to the change of the ranking. <br> The larger the value means a larger impact on the final ranking.
       </div>
-      <div id="simi" v-if="showShap" style="width: 80%"> <!-- style="width: 350%"> -->
-        <!-- <div class="icon-container">
-        <img src="../../question_mark.png" alt="Icon" class="question_img">
-        <span class="text">
-          <p style="margin-left: 20px"> Global Similarity Graph </p>
-          <ul>
-            <pre><span>
-              
-          </span></pre>
-          </ul>
-        </span>
-      </div> -->
-      </div>
+      <div v-if="showShap" id="shap_image" style="width: 50%"><img src="../../../shap_new.svg" onerror="this.onerror=null"/></div>
+      <div id="simi" v-if="showShap" style="/*width: 400%*/"> <!-- style="width: 350%"> --></div>
       <!-- <div id="bubble_test"></div> -->
       <!-- <div id="bubble_df"></div>
       <div id="df_line"></div>
@@ -103,16 +92,18 @@
           <h2>Global Explanation</h2>
           <h2>Item Level Explanation</h2>
         </div> -->
-
+        <div id='myDiv6'>
+        </div>
         <div id='myDiv2'>
+        </div>
+        <div id='myDiv5'>
         </div>
         <div id='myDiv3'>
         </div>
-        <div id='myDiv'>
+        <div id='myDiv4'>
         </div>
         </div>
       </div>
-    </div>
   </div>
   <button @click="submit()" id="button"><b>Submit Ranking</b></button>
 </template>
@@ -123,8 +114,10 @@
 import {defineComponent} from 'vue'
 import {VueDraggableNext} from 'vue-draggable-next'
 import {getRanking, postRanking, getPreference} from '../api/api'
-import { f1 } from "../plot_functions/plot.js";
 import { f3 } from "../plot_functions/plot.js";
+import { f4 } from "../plot_functions/plot.js";
+import { f5 } from "../plot_functions/plot.js";
+import { f6 } from "../plot_functions/plot.js";
 import { item_similarity3 } from "../plot_functions/plot.js";
 import { barplot } from "../plot_functions/global.js";
 // import {bubble} from '../plot_functions/global'
@@ -230,13 +223,14 @@ export default defineComponent({
           // console.log(this.feature_importance)
           // console.log(this.item_explanations)
         })        
-        setTimeout(() => document.getElementById('loading').style.display = 'none', 18000);
-        setTimeout(() => this.showShap = true, 18000);
+        setTimeout(() => document.getElementById('loading').style.display = 'none', 21000);
+        setTimeout(() => this.showShap = true, 21000);
+        setTimeout(() => barplot(this.third_rank), 24000);
+
         // setTimeout(() => {var elem = document.createElement("img");
         //                   elem.className = "shapClass";
-        //                   elem.src = "../../../shap_graph.svg"; 
+        //                   elem.src = "../../../shap_new.svg"; 
         //                   document.getElementById("shap_image").appendChild(elem);}, 21000);
-        setTimeout(() => barplot(this.third_rank), 25000);
         // setTimeout(() => {
         //   // Load the HTML file using AJAX or fetch
         //   fetch('bar.html')
@@ -280,8 +274,9 @@ export default defineComponent({
       this.isActive = this.isActive === item.rank ? 0 : item.rank;
       f3(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
       item_similarity3(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
-      f1(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
-      // f2(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
+      f4(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
+      f5(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
+      f6(this.itemList[item.rank - 1], this.third_rank[item.rank - 1]);
     },
 
     submit: function() {
@@ -322,8 +317,19 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 19% 19% 62%;
+}
+
+.list1, .list2, #button {
+  position: fixed;
+  top: 0;
+  box-sizing: border-box;
+}
+
+#button {
+  top: 650px;
+  left: 40px;
 }
 
 .list {
@@ -332,17 +338,13 @@ export default defineComponent({
   margin-left: -100px;
 }
 
-.list2, .list1 {
-  float: left;
-  flex-basis: 20%;
+.list2 {
+  left: 275px;
 }
-
 .explanation {
-  float: right;
-  flex-basis: 30%;
+  right: 10px;
   margin: 10px;
-  margin-top: 0px;
-  // margin-left: -100px;
+  margin-top: -135px;
 }
 
 .list, .draggable {
@@ -391,7 +393,7 @@ strong {
 
 pre {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   // margin: 0.5em 0;
   white-space: pre-line;
   // overflow: auto;
@@ -437,7 +439,7 @@ button {
 
 .item {
   display: inline-block;
-  width: 20em;
+  width: 12em;
   padding: 1em;
   /*border: 1px solid black;*/
   border-radius: 4px;
@@ -453,6 +455,7 @@ button {
 .explanation {
   display: inline-block;
   margin-left: 30px;
+  flex: 1;
   // width: 50%;
   // margin-left: 100px;
   // margin-top: 200px;
@@ -473,50 +476,6 @@ a {
   color: #42b983;
 }
 
-.icon-container {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.icon-container img {
-  height: 30px;
-}
-
-
-.icon-container .text {
-  top: 30px;
-  // right: -50px;
-  background-color: #333;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.text {
-  position: relative;
-  top: 20px;
-  // right: calc(100% + 10px);
-  background-color: #fff;
-  padding: 10px;
-  width: 200px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-  display: none;
-  width: 900%;
-}
-
-
-// .icon:hover + .text {
-//   display: block;
-// }
-
-.icon-container:hover .text {
-  display: block;
-}
 .shapClass {
   margin-left: 30px;
   max-width: 90%;
@@ -527,5 +486,32 @@ a {
   max-width: 20%;
   height: auto;
 }
+
+.question .icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.question .text {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 200px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.question .icon:hover + .text {
+  display: block;
+}
+
 
 </style>

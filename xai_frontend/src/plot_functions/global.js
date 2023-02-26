@@ -31,25 +31,39 @@ export const barplot = (songs) => {
     // Assuming that songs is an array of objects containing the song data
     let df = new dfd.DataFrame(songs);
     let names = df['song'].values;
-    df.drop({columns: ["id", "artist", "song", "duration_ms", "explicit", "year", "mode", "genre", "name", "rank"], inplace: true});
+    try {
+        df.drop({columns: ["id", "artist", "song", "duration_ms", "explicit", "year", "mode", "genre", "name", "rank", "color"], inplace: true});
+      } catch (error) {
+        df.drop({columns: ["id", "artist", "song", "duration_ms", "explicit", "year", "mode", "genre", "name", "rank"], inplace: true});
+      }
     // Scale the data using MinMaxScaler
     const scaler = new dfd.MinMaxScaler();
     scaler.fit(df);
-    const X = scaler.transform(df);
+    let X = scaler.transform(df);
 
-    let colors = ['rgba(255, 174, 255, 0.5)', 'rgba(255, 255, 128, 0.5)', 'rgba(128, 255, 200, 0.5)',              
-    'rgba(199, 174, 255, 0.5)', 'rgba(39, 140, 255, 0.5)', 'rgba(255, 122, 133, 0.5)', 'rgba(55, 174, 99, 0.5)',              
-    'rgba(140, 100, 255, 0.5)', 'rgba(80, 150, 74, 0.5)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 174, 0, 0.5)'];
+    let colors = ['#FAD6A5',
+    '#F0B775',
+    '#F1E1C9',
+    '#8A7F66',
+    '#C0C3A3',
+    '#8BB8A8',
+    '#A7D2C1',
+    '#E7EAD2',
+    '#F2B2A8',
+    '#F9CDAD',
+    '#F3D3BD',
+    '#FCE5CD']
+    // let colors = ['#DE3163', '#6495ED', '#FFC300', '#FF5733', '#DAF7A6', '#C70039', '#00A5E3', '#8B00FF', '#7CFC00', '#FF1493', '#00BFFF', '#F0E68C', '#A0522D'];
 
     let data = [];
     for (let rank = 0; rank < 10; rank++) {
         let trace = {
             x: X.columns,
-            y: X[rank],
+            y: X.data,
             name: names[rank],
             marker: {
             color: colors[rank],
-            opacity: 0.1,
+            opacity: 1,
             line: {
                 color: 'rgb(0,0,0)',
                 width: 1.5
@@ -61,22 +75,19 @@ export const barplot = (songs) => {
         data.push(trace);
     }
 
-    // let layout = {
-    // barmode: 'overlay',
-    // legend: {
-    //     orientation: 'h',
-    //     x: 0,
-    //     y: 1.2,
-    //     yanchor: 'bottom'
-    //   }
-    // };
-
-    // let config = {
-    // responsive: true
-    // };
-
-    // Plotly.newPlot('simi', data, layout, config);
-    X.plot("simi").bar()
+    X.plot("simi").bar({
+        layout: {
+            title: "<b>Global Features</b>",
+            xaxis: {
+              title: "Songs"
+            },
+            yaxis: {
+              title: "Value"
+            },
+            colorway: colors,
+            barmode: 'stack',
+        }
+    })
 
 }
 
