@@ -6,7 +6,7 @@
     <div class="question">
         <img src="../../question_mark.png" alt="Icon" class="icon">
         <span class="text">
-          <p style="margin-left: 20px"> Rank the songs below based on your personal preference. After submitting the ranking, please wait patiently as the explanation is computed. </p>
+          <p style="margin-left: 20px"> Rank the songs below based on your personal preference using the drag and drop functionality. After submitting the ranking, please wait patiently as the explanation is computed. </p>
           </span>
       </div>
     <draggable :list="itemList" ghost-class="ghost" @end="onEnd" @change="onChange">
@@ -78,7 +78,7 @@
       <img src="../../loading.gif" alt="Loading..." id="loading_img">
       </div>
       <div v-if="showShap" style="text-align: center;"><h3>Shap Plot</h3>
-        The shap value is the measurement of features' contribution to the change of the ranking. <br> The larger the value means a larger impact on the final ranking.
+        The shap value is the measurement of features' contribution to the change of the ranking. <br> The larger the value means a larger impact on your ranking.
       </div>
       <div v-if="showShap" id="shap_image" style="width: 50%"><img src="../../../shap_new.svg" onerror="this.onerror=null"/></div>
       <div id="simi" v-if="showShap" style="/*width: 400%*/"> <!-- style="width: 350%"> --></div>
@@ -92,11 +92,11 @@
           <h2>Global Explanation</h2>
           <h2>Item Level Explanation</h2>
         </div> -->
-        <div id='myDiv6'>
-        </div>
         <div id='myDiv2'>
         </div>
         <div id='myDiv5'>
+        </div>
+        <div id='myDiv6'>
         </div>
         <div id='myDiv3'>
         </div>

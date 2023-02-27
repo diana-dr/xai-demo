@@ -152,7 +152,7 @@ export function f1(item, third_party) {
 export function item_similarity3(song1, song2) {
 
 // Calculate the difference between the values of each feature
-const features = ['energy', 'danceability', 'speechiness', 'instrumentalness', 'liveness', 'valence', 'acousticness', 'loudness', 'key', 'popularity']
+const features = ['energy', 'danceability', 'speechiness', 'instrumentalness', 'liveness', 'valence', 'acousticness']
 const diffs = [];
 for (let i = 0; i < features.length; i++) {
   const diff = song1[features[i]] - song2[features[i]];
